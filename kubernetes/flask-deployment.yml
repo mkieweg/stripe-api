@@ -1,0 +1,49 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  creationTimestamp: null
+  labels:
+    name: flask
+  name: flask
+spec:
+  progressDeadlineSeconds: 2147483647
+  replicas: 1
+  selector:
+    matchLabels:
+      app: flask
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: flask
+    spec:
+      containers:
+      - env:
+        - name: STRIPE_API_KEY
+          valueFrom:
+            secretKeyRef:
+              key: api-token
+              name: stripe-credentials
+        - name: STRIPE_PRICE_ID
+          valueFrom:
+            secretKeyRef:
+              key: price-id
+              name: stripe-credentials
+        - name: STRIPE_WEBHOOK_SECRET
+          valueFrom:
+            secretKeyRef:
+              key: webhook-token
+              name: stripe-credentials
+        image: ghcr.io/mkieweg/stripe-api:latest
+        imagePullPolicy: Always
+        name: flask
+        resources: {}
+        terminationMessagePath: /dev/termination-log
+        terminationMessagePolicy: File
+      imagePullSecrets:
+        - name: regcred
+      dnsPolicy: ClusterFirst
+      restartPolicy: Always
+      schedulerName: default-scheduler
+      securityContext: {}
+      terminationGracePeriodSeconds: 30
