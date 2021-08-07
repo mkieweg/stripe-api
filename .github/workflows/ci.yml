@@ -18,7 +18,7 @@ jobs:
         with:
           registry: ghcr.io
           username: ${{ github.repository_owner }}
-          password: ${{ secrets.GITHUB_TOKEN }}
+          password: ${{ secrets.GH_ACTIONS_TOKEN }}
       -
         name: Build and push
         id: docker_build
@@ -26,3 +26,5 @@ jobs:
         with:
           push: true
           tags: ghcr.io/${{ github.repository }}:latest
+          secrets: |
+            GIT_AUTH_TOKEN=${{ secrets.GH_ACTIONS_TOKEN }}
