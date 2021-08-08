@@ -5,6 +5,7 @@ from multiprocessing import Process
 
 import stripe
 from flask import Flask, request, jsonify
+from prometheus_flask_exporter import PrometheusMetrics
 
 from datamodel.payment import Store
 
@@ -18,9 +19,14 @@ logger = logging.getLogger()
 
 def create_app():
     app = Flask(__name__)
+    metrics = PrometheusMetrics(app)
     payment_store = Store()
 
     @app.route('/checkout', methods=['POST'])
+    @metrics.counter(
+        'cnt_collection', 'Number of invocations per collection', labels={
+            'status': lambda resp: resp.status_code
+        })
     def checkout():
         payload = json.loads(request.data)
         create_payment = Process(target=payment_store.add_payment, args=(payload,))
@@ -28,6 +34,11 @@ def create_app():
         return jsonify({'status': 'success'})
 
     @app.route('/webhook', methods=['POST'])
+    @metrics.counter(
+        'cnt_webhook', 'Number of webhook invocations', labels={
+            'webhook': lambda: request.view_args['collection_id'],
+            'status': lambda resp: resp.status_code
+        })
     def webhook():
         webhook_secret = os.getenv("STRIPE_WEBHOOK_SECRET")
         request_data = json.loads(request.data)
