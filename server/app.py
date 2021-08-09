@@ -8,6 +8,7 @@ from flask import Flask, request, jsonify
 from prometheus_flask_exporter import PrometheusMetrics
 
 from datamodel.payment import Store
+from datamodel.mocks import MockStore
 
 logging.basicConfig(level=logging.DEBUG,
                     format='[%(asctime)s]: {} %(levelname)s %(message)s'.format(os.getpid()),
@@ -17,10 +18,13 @@ logging.basicConfig(level=logging.DEBUG,
 logger = logging.getLogger()
 
 
-def create_app():
+def create_app(test_config=None):
     app = Flask(__name__)
     metrics = PrometheusMetrics(app)
-    payment_store = Store()
+    if test_config is None:
+        payment_store = Store()
+    else:
+        payment_store = MockStore()
 
     @app.route('/checkout', methods=['POST'])
     @metrics.counter(
