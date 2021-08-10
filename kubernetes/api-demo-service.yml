@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: stripe-api-demo
+  labels:
+    service: stripe-api-demo
+spec:
+  selector:
+    app: stripe-api-demo
+  ports:
+  - port: 80
+    targetPort: 80

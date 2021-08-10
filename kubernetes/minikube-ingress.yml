@@ -1,7 +1,7 @@
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: flask-ingress
+  name: stripe-api-demo-ingress
   annotations:
     kubernetes.io/ingress.class: nginx
     nginx.ingress.kubernetes.io/backend-protocol: "HTTP"
@@ -10,17 +10,24 @@ spec:
   - host: hello.world
     http:
       paths:
-      - path: /checkout
+      - path: /api/v1/register
         pathType: Prefix
         backend:
           service:
-            name: flask
+            name: stripe-api-demo
             port:
-              number: 5000
-      - path: /webhook
+              number: 80
+      - path: /api/v1/subscribe
         pathType: Prefix
         backend:
           service:
-            name: flask
+            name: stripe-api-demo
             port:
-              number: 5000
+              number: 80
+      - path: /api/v1/webhook
+        pathType: Prefix
+        backend:
+          service:
+            name: stripe-api-demo
+            port:
+              number: 80

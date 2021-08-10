@@ -30,8 +30,8 @@ POSSIBILITY OF SUCH DAMAGE.
 */
 package main
 
-import "gitlab.com/mkieweg/stripe-api/cmd"
+import "github.com/mkieweg/stripe-api/cmd"
 
 func main() {
-  cmd.Execute()
+	cmd.Execute()
 }

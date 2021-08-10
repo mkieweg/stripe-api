@@ -3,19 +3,19 @@ kind: Deployment
 metadata:
   creationTimestamp: null
   labels:
-    name: flask
-  name: flask
+    name: stripe-api-demo
+  name: stripe-api-demo
 spec:
   progressDeadlineSeconds: 2147483647
   replicas: 1
   selector:
     matchLabels:
-      app: flask
+      app: stripe-api-demo
   template:
     metadata:
       creationTimestamp: null
       labels:
-        app: flask
+        app: stripe-api-demo
     spec:
       containers:
       - env:
@@ -36,7 +36,7 @@ spec:
               name: stripe-credentials
         image: ghcr.io/mkieweg/stripe-api:latest
         imagePullPolicy: Always
-        name: flask
+        name: stripe-api-demo
         resources: {}
         terminationMessagePath: /dev/termination-log
         terminationMessagePolicy: File

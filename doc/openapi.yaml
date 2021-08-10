@@ -1,0 +1,66 @@
+openapi: "3.0.0"
+info:
+  title: Stripe Checkout Example API
+  version: 0.0.1
+servers:
+  - url: http://api.example.com/api/v1
+paths:
+  /register:
+    post:
+      summary: Add a new customer and payment information
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                number:
+                  type: string
+                exp_month:
+                  type: string
+                exp_year:
+                  type: string
+                cvc:
+                  type: string
+      responses:
+        '201':    # status code
+          description: The IDs of the newly created objects
+          content:
+            application/json:
+              schema: 
+                type: object
+                properties:
+                  priceId:
+                    type: string
+                  paymentMethodId:
+                    type: string
+                  customerId:
+                    type: string
+                  subscriptionId:
+                    type: string
+                  uuid:
+                    type: string
+  /subscribe:
+    post:
+      summary: Add a new customer and payment information
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                priceId:
+                  type: string
+                paymentMethodId:
+                  type: string
+                customerId:
+                  type: string
+                subscriptionId:
+                  type: string
+                uuid:
+                  type: string
+      responses:
+        '200':    # status code
+          description: OK

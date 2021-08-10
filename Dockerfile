@@ -1,16 +1,16 @@
-FROM python:3.9.5-slim-buster
+FROM golang:1.16-alpine AS installer
+WORKDIR /src/bin
+RUN apk add --no-cache git
+COPY go.* .
+RUN go mod download
 
-RUN pip install pipenv
+FROM installer as builder
+COPY . .
+RUN GOOS=linux go build -o api ./cmd/api
 
-ADD server /application
-ADD requirements.txt /application
+FROM alpine
+EXPOSE 80
+COPY --from=builder /src/bin/api .
 
-WORKDIR /application
-
-RUN pip install -r requirements.txt
-
-RUN pip install gunicorn[gevent]
-
-EXPOSE 5000
-
-CMD gunicorn --worker-class gevent --workers 8 --bind 0.0.0.0:5000 wsgi:app --max-requests 10000 --timeout 5 --keep-alive 5 --log-level info
+ENTRYPOINT [ "./api" ]
+CMD [""]
