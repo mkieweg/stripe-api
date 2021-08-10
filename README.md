@@ -7,7 +7,7 @@ A Makefile is provided for local verification deployment using minikube. The `.y
 The local deployment needs `minikube` and `kubectl` installed and expects a `secrets.yml` file to be present in the `kubernetes` directory. A sample file is shown below. The required Tokens and IDs need to be base64 encoded.
 
 ```yml
- apiVersion: v1
+apiVersion: v1
 kind: Secret
 metadata:
   name: stripe-credentials
