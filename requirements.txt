@@ -1,4 +1,0 @@
-Flask==2.0.1
-stripe==2.60.0
-prometheus-flask-exporter==0.18.2
-pytest~=6.2.4
