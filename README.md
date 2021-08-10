@@ -1,6 +1,6 @@
 # stripe-api
 
-A Makefile is provided for local verification deployment using minikube. The `.yml` files in the `kubernetes` directory can be used to deploy the application to an existing k8s cluster.
+A Makefile is provided for local verification deployment using `minikube`. The `.yml` files in the `kubernetes` directory can be used to deploy the application to an existing k8s cluster.
 
 ## Requirements
 
