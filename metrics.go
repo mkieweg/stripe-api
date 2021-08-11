@@ -2,47 +2,10 @@ package stripeapi
 
 import (
 	"github.com/prometheus/client_golang/prometheus"
-	"github.com/prometheus/client_golang/prometheus/promauto"
 	"github.com/prometheus/client_golang/prometheus/promhttp"
 )
 
 var (
-	registerHttpOK = promauto.NewCounter(prometheus.CounterOpts{
-		Namespace: "frontend api",
-		Subsystem: "register",
-		Name:      "http_ok_total",
-	})
-
-	subscribeHttpOK = promauto.NewCounter(prometheus.CounterOpts{
-		Namespace: "frontend api",
-		Subsystem: "subscribe",
-		Name:      "http_ok_total",
-	})
-
-	webhookHttpOK = promauto.NewCounter(prometheus.CounterOpts{
-		Namespace: "frontend api",
-		Subsystem: "webhook",
-		Name:      "http_ok_total",
-	})
-
-	registerHttpInternalServerError = promauto.NewCounter(prometheus.CounterOpts{
-		Namespace: "frontend api",
-		Subsystem: "register",
-		Name:      "http_internal_server_error_total",
-	})
-
-	subscribeHttpInternalServerError = promauto.NewCounter(prometheus.CounterOpts{
-		Namespace: "frontend api",
-		Subsystem: "subscribe",
-		Name:      "http_internal_server_error_total",
-	})
-
-	webhookHttpInternalServerError = promauto.NewCounter(prometheus.CounterOpts{
-		Namespace: "frontend api",
-		Subsystem: "webhook",
-		Name:      "http_internal_server_error_total",
-	})
-
 	inFlightGauge = prometheus.NewGauge(prometheus.GaugeOpts{
 		Name: "in_flight_requests",
 		Help: "A gauge of requests currently being served by the wrapped handler.",
