@@ -12,19 +12,7 @@ import (
 	"github.com/stripe/stripe-go/webhook"
 )
 
-const apiPrefix = "/api/v1"
-
-var store payment.Store
-
-func serve() error {
-	http.HandleFunc(apiPrefix+"/register", createCustomer)
-	http.HandleFunc(apiPrefix+"/subscribe", createSubscription)
-	http.HandleFunc(apiPrefix+"/webhook", handleWebhook)
-	store = &payment.StoreImplementation{}
-	return http.ListenAndServe(":80", nil)
-}
-
-func createCustomer(w http.ResponseWriter, r *http.Request) {
+var registerHandler = http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 	if r.Method != "POST" {
 		http.Error(w, http.StatusText(http.StatusMethodNotAllowed), http.StatusMethodNotAllowed)
 		return
@@ -43,9 +31,9 @@ func createCustomer(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	json.NewEncoder(w).Encode(p)
-}
+})
 
-func createSubscription(w http.ResponseWriter, r *http.Request) {
+var subscribeHandler = http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 	if r.Method != "POST" {
 		http.Error(w, http.StatusText(http.StatusMethodNotAllowed), http.StatusMethodNotAllowed)
 		return
@@ -76,9 +64,9 @@ func createSubscription(w http.ResponseWriter, r *http.Request) {
 		log.Errorf("sub.New: %v", err)
 		return
 	}
-}
+})
 
-func handleWebhook(w http.ResponseWriter, r *http.Request) {
+var webhookHandler = http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 	const MaxBodyBytes = int64(65536)
 	r.Body = http.MaxBytesReader(w, r.Body, MaxBodyBytes)
 	payload, err := ioutil.ReadAll(r.Body)
@@ -132,4 +120,4 @@ func handleWebhook(w http.ResponseWriter, r *http.Request) {
 	}
 
 	w.WriteHeader(http.StatusOK)
-}
+})

@@ -10,6 +10,7 @@ import (
 )
 
 var stopChan chan os.Signal
+var ready bool
 
 func init() {
 	stopChan = make(chan os.Signal)
@@ -18,14 +19,14 @@ func init() {
 
 // Run bootstraps the orchestrator and waits for the shutdown signal
 func Run() {
-	go func() {
-		config.InitialiseConfig()
-		log.Info("starting to serve")
-		if err := serve(); err != nil {
-			log.Fatal(err)
-		}
-	}()
 
+	config.InitialiseConfig()
+	log.Info("starting to serve")
+	startHttpServer()
+	ready = true
 	log.WithFields(log.Fields{}).Info("initialisation finished")
 	<-stopChan
+	if err := stopHttpServer(); err != nil {
+		log.Error(err)
+	}
 }

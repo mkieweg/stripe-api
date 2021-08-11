@@ -48,7 +48,7 @@ func Test_createCustomer(t *testing.T) {
 				t.Fatal(err)
 			}
 			rr := httptest.NewRecorder()
-			handler := http.HandlerFunc(createCustomer)
+			handler := http.Handler(registerHandler)
 			handler.ServeHTTP(rr, req)
 
 			if status := rr.Code; status != tt.want {
@@ -98,7 +98,7 @@ func Test_createSubscription(t *testing.T) {
 				t.Fatal(err)
 			}
 			rr := httptest.NewRecorder()
-			handler := http.HandlerFunc(createSubscription)
+			handler := http.Handler(subscribeHandler)
 			handler.ServeHTTP(rr, req)
 
 			if status := rr.Code; status != tt.want {

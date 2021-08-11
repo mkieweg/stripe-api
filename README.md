@@ -1,6 +1,24 @@
-# stripe-api
+# Stripe API Demo
 
-A Makefile is provided for local verification deployment using `minikube`. The `.yml` files in the `kubernetes` directory can be used to deploy the application to an existing k8s cluster.
+This application is a demo for a Stripe subscription payment process. It provides 3 API endpoints used to create a user, subscribe to a product, and process incoming Stripe webhooks.
+
+A Makefile is provided for local verification deployment using `minikube`. A Docker deployment can be created using the `docker compose` command. The `.yml` files in the `kubernetes` directory can be used to deploy the application to an existing k8s cluster.
+
+## API
+
+The API endpoints are defined in the OpenAPI 3 specification in `doc/openapi.yml`.
+
+### `/api/v1/register`
+
+Expects a JSON object containing `number`, `exp_month`, `exp_year`, and `cvc` strings. Returns a JSON object containing `priceId`, `paymentMethodId`, `customerId` and `uuid` strings.
+
+### `/api/v1/subscribe`
+
+Expects a JSON object containing `priceId`, `paymentMethodId`, `customerId` and `uuid` strings.
+
+### `/api/v1/webhook`
+
+Expects a Stripe webhook and processes it.
 
 ## Run Unit Tests
 
@@ -12,6 +30,8 @@ $ STRIPE_API_KEY=<stripe secret key> \
     STRIPE_WEBHOOK_SECRET=<webhook secret> \
     make test
 ```
+
+For the tests to pass valid values need to be passed to `Test_createSubscription` in `server_test.go`.
 
 ## Run Locally (Docker Compose)
 
@@ -69,4 +89,4 @@ This macro deletes the Deployment, Service, and Ingress used. It requires no fur
 
 ### `make stop`
 
-This macro is only an alias for `minikube stop`
+This macro is only an alias for `minikube stop`.
