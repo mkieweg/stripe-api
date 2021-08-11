@@ -30,6 +30,7 @@ var registerHandler = http.HandlerFunc(func(w http.ResponseWriter, r *http.Reque
 		log.Error(err)
 		return
 	}
+	store.AddPayment(p)
 	json.NewEncoder(w).Encode(p)
 })
 
@@ -40,7 +41,7 @@ var subscribeHandler = http.HandlerFunc(func(w http.ResponseWriter, r *http.Requ
 	}
 
 	var req *payment.Payment
-	if err := json.NewDecoder(r.Body).Decode(req); err != nil {
+	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		log.Errorf("json.NewDecoder.Decode: %v", err)
 		return

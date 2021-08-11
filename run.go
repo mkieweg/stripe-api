@@ -19,7 +19,6 @@ func init() {
 
 // Run bootstraps the orchestrator and waits for the shutdown signal
 func Run() {
-
 	config.InitialiseConfig()
 	log.Info("starting to serve")
 	startHttpServer()
