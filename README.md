@@ -6,7 +6,7 @@ A Makefile is provided for local verification deployment using `minikube`. A Doc
 
 ## API
 
-The API endpoints are defined in the OpenAPI 3 specification in `doc/openapi.yml`.
+The API endpoints are defined in the OpenAPI 3 specification in `doc/openapi.yml`. The server is configured to listen on poer 80 by default.
 
 ### `/api/v1/register`
 
@@ -90,3 +90,7 @@ This macro deletes the Deployment, Service, and Ingress used. It requires no fur
 ### `make stop`
 
 This macro is only an alias for `minikube stop`.
+
+## Security considerations
+
+The API access is neither authenticated nor encrypted. It should not be used as is. For encryption a HTTPS reverse proxy could be considered.
