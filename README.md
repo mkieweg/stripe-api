@@ -2,7 +2,32 @@
 
 A Makefile is provided for local verification deployment using `minikube`. The `.yml` files in the `kubernetes` directory can be used to deploy the application to an existing k8s cluster.
 
-## Requirements
+## Run Unit Tests
+
+To run the unit tests certain parameters need to be set using environment variables
+
+```sh
+$ STRIPE_API_KEY=<stripe secret key> \
+    STRIPE_PRICE_ID=<price id> \
+    STRIPE_WEBHOOK_SECRET=<webhook secret> \
+    make test
+```
+
+## Run Locally (Docker Compose)
+
+Run `docker compose up` to build the Docker image and run a Container. This more lightweight than using `minikube`. To use Docker Compose a `.env` file containing the following values is required:
+
+```env
+STRIPE_API_KEY=<stripe secret key>
+STRIPE_PRICE_ID=<price id>
+STRIPE_WEBHOOK_SECRET=<webhook secret>
+```
+
+## Run Locally (Minikube)
+
+The application is built, deployed, and run locally using the `make` command.
+
+### Requirements
 
 The local deployment needs `minikube` and `kubectl` installed and expects a `secrets.yml` file to be present in the `kubernetes` directory. A sample file is shown below. The required Tokens and IDs need to be base64 encoded.
 
@@ -16,21 +41,6 @@ data:
   api-token: <base64 encoded token>
   webhook-token: <base64 encoded token>
   price-id: <base64 encoded token>
-```
-
-## Run Locally (Minikube)
-
-The application is built, deployed, and run locally using the `make` command.
-
-### `make test`
-
-To run the unit tests certain parameters need to be set using environment variables
-
-```sh
-$ STRIPE_API_KEY=<stripe secret key> \
-    STRIPE_PRICE_ID=<price id> \
-    STRIPE_WEBHOOK_SECRET=<webhook secret> \
-    make test
 ```
 
 ### `make build`
@@ -60,13 +70,3 @@ This macro deletes the Deployment, Service, and Ingress used. It requires no fur
 ### `make stop`
 
 This macro is only an alias for `minikube stop`
-
-## Run Locally (Docker Compose)
-
-Run `docker compose up` to build the Docker image and run a Container. This more lightweight than using `minikube`. To use Docker Compose a `.env` file containing the following values is required:
-
-```env
-STRIPE_API_KEY=<stripe secret key>
-STRIPE_PRICE_ID=<price id>
-STRIPE_WEBHOOK_SECRET=<webhook secret>
-```
