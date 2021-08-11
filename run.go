@@ -20,10 +20,13 @@ func init() {
 // Run bootstraps the orchestrator and waits for the shutdown signal
 func Run() {
 	config.InitialiseConfig()
-	log.Info("starting to serve")
+	log.SetLevel(log.InfoLevel)
+	log.SetFormatter(&log.JSONFormatter{})
+	log.Info(log.GetLevel())
+	log.Info("starting to serve on :80")
 	startHttpServer()
 	ready = true
-	log.WithFields(log.Fields{}).Info("initialisation finished")
+	log.Info("initialisation finished")
 	<-stopChan
 	if err := stopHttpServer(); err != nil {
 		log.Error(err)
